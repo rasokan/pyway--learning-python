@@ -5,19 +5,19 @@
 class Animal(object):
     pass
     
-## ??
+## Is-a
 class Dog(Animal):
     def __init__(self, name):
         ## ??
         self.name = name
 
-## ??
+## Is-a
 class Cat(Animal):
     def __init__(self,name):
         ## ??
         self.name = name
        
-## ?? 
+## Has-a
 class Person(object):
     def __init__(self, name):
         ## ??
@@ -25,7 +25,7 @@ class Person(object):
         ## person has a pet 
         self.pet = None
      
-## ??        
+## Is-a     
 class Employee(Person):
     def __init__(self, name,salary):
         ## 
@@ -33,15 +33,15 @@ class Employee(Person):
         ## 
         self.salary = salary
     
-## ??
+## Has-a
 class Fish(object):
     pass
     
-## ??
+## Is-a
 class Salmon(Fish):
     pass
 
-## ??    
+## Has-a  
 class Halibut(object):
     pass
 
