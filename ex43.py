@@ -26,13 +26,23 @@ from sys import exit
 from random import randint
 
 ## define class trees
+from pip.backwardcompat import raw_input
+
+
 class Map(object):
+    scenes = {
+        'central_corridor': CentralCorridor(),
+        'laser_weapon_armory':LaserWeaponArmory(),
+        'the_bridge':TheBridge(),
+        'escape_pod':EscapePod(),
+        'death':Death(),
+    }
     def __init__(self, start_scene):
-        pass
+        self.start_scene = start_scene
     def next_scene(self, scene_name):
-        pass
+        return Map.scenes.get(scene_name)
     def opening_scene(self):
-        pass
+        return self.next_scene(self.start_scene)
 
 
 class Engine(object):
@@ -60,7 +70,7 @@ class Death(Scene):
         "Such a luser.", 
         "I have a small puppy that is better at this."]
     def enter(self):
-        print Death.quips[randict(0, len(self.quips)-1)]
+        print Death.quips[randint(0, len(self.quips)-1)]
         exit(1)
         
 class CentralCorridor(Scene):
@@ -118,9 +128,9 @@ class LaserWeaponArmory(Scene):
         print "and you need the code to get the bomb out. If you get the code" 
         print "wrong 10 times then the lock closes forever and you can't"
         print "get the bomb. The code is 3 digits."
-        code = "%d%d%d" % (randict(1,9), randict(1,9), randict(1,9))
+        code = "%d%d%d" % (randint(1,9), randint(1,9), randint(1,9))
         guess = raw_input("[keypad]> ")
-        guessses = 0
+        guesses = 0
         
         while guess != code and guesses < 10:
             print "BZZZZZZZZEDDDDDD"
@@ -141,7 +151,7 @@ class LaserWeaponArmory(Scene):
     
 class TheBridge(Scene):
     def enter(self):
-        print "You burst onto the Bridge with the netron destruct bomb" 
+        print "You burst onto the Bridge with the netron destruct bomb"
         print "under your arm and surprise 5 Gothons who are trying to" 
         print "take control of the ship. Each of them has an even uglier" 
         print "clown costume than the last. They haven't pulled their" 
@@ -169,10 +179,11 @@ class TheBridge(Scene):
             print "Now that the bomb is placed you run to the escape pod to" 
             print "get off this tin can."
             return 'escape_pod'
+
         else:
             print "DOES NOT COMPUTE"
             print "the_bridge"
-        
+
 class EscapePod(Scene):
     def enter(self):
         print "You rush through the ship desperately trying to make it to" 
@@ -183,13 +194,27 @@ class EscapePod(Scene):
         print "but you don't have time to look. There's 5 pods, which one" 
         print "do you take?"
         
-        good_pod = randict(1,5)
+        good_pod = randint(1,5)
         guess = raw_input("[pod #]> ")
+        if int(guess) != good_pod:
+            print "You jump into pod %s and hit the eject button." % guess
+            print "The pod escapes out into the void of space, then"
+            print "implodes as the hull ruptures, crushing your body" 
+            print "into jam jelly."
+            return 'death'
+        else:
+            print "You jump into pod %s and hit the eject button." % guess 
+            print "The pod easily slides out into space heading to"
+            print "the planet below. As it flies to the planet, you look" 
+            print "back and see your ship implode then explode like a" 
+            print "bright star, taking out the Gothon ship at the same" 
+            print "time. You won!"
+            return 'finished'
 
 ## test info 
-#a_map = Map('central_corridor')             
-#a_game = Engine(a_map)
-#a_game.play()
+a_map = Map('central_corridor')
+a_game = Engine(a_map)
+a_game.play()
 
 # 136
 
